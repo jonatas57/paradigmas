@@ -57,7 +57,7 @@ freqs s = [percent (count c s) (lowers s) | c <- s]
 -- tabelas de frequência
 -- Soma (Observado - Esperado) ^ 2 / Esperado
 chisqr :: [Float] -> [Float] -> Float
-chisqr obs esp = sum [((obs !! i) - (esp !! i)) ^ 2 / (esp !! i) | i <- [0..(length obs)]]
+chisqr obs esp = sum [(a - b) ^ 2 / b | (a, b) <- zip obs esp]
 
 -- rotaciona uma tabela em n posicoes
 rotate :: Int -> [a] -> [a]
