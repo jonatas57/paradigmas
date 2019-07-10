@@ -16,11 +16,12 @@ table = [8.1, 1.5, 2.8, 4.2, 12.7, 2.2, 2.0, 6.1, 7.0,
 -- retorna a n-esima letra seguinte,
 -- evite ultrapassar o limite com `mod` 26
 shift :: Int -> Char -> Char
-shift x c = int2let (mod (let2Int c + x) 26)
+shift x c | isLower c  = int2let (mod (let2Int c + x) 26)
+          | otherwise  = c
 
 -- aplica a função shift em cada letra da string
 encode :: Int -> String -> String
-encode n s = [if elem c ['a'..'z'] then shift n c else c | c <- s]
+encode n s = [shift n c | c <- s]
 
 decode :: Int -> String -> String
 decode n s = encode (-n) s
@@ -35,7 +36,7 @@ crack xs = encode (-factor) xs
 -- quantidade de letras minúsculas
 lowers :: String -> Int
 lowers []     = 0
-lowers (x:xs) = (if toLower x == x then 1 else 0) + lowers xs
+lowers (x:xs) = (if isLower x then 1 else 0) + lowers xs
 
 -- conta a ocorrência de um caracter em uma String
 count :: Char -> String -> Int
@@ -67,4 +68,4 @@ rotate n (x:xs) = rotate (n - 1) (xs ++ [x])
 -- retorna a lista de posições que contém um
 -- elemento x
 positions :: Eq a => a -> [a] -> [Int]
-positions x l = [i | i <- [0..(length l)], x == l !! i]
+positions x xs = [i | (y, i) <- zip xs [0..], y == x]
